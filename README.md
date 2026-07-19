@@ -75,22 +75,23 @@ to page through its content.
 
 ## Plex Trigger
 
-The **Plex Trigger** node starts a workflow on Plex events. It offers several
-mechanisms, best-first, and the default **Auto** mode degrades gracefully:
+The **Plex Trigger** node starts a workflow on playback changes. It polls the
+server's active sessions (`/status/sessions`) on the schedule you set on the
+node and fires on **Playback Started / Paused / Resumed / Stopped**. Works on
+any Plex server (no Plex Pass needed).
 
-| Mode | Real-time | Plex Pass | Setup | Notes |
-|------|-----------|-----------|-------|-------|
-| **Auto** (default) | ✅ | no | none | WebSocket, automatically falls back to Polling if the stream drops |
-| **Webhook** | ✅✅ | **required** | paste the node URL into Plex → Settings → Webhooks | Richest events (rate, new-in-library, watched) |
-| **WebSocket** | ✅ | no | none | Live notification stream from the server |
-| **Polling** | ~ | no | interval | Diffs `/status/sessions` every N seconds |
+- Pick the events you care about (default: Started + Stopped).
+- Set the poll schedule on the node (down to every minute).
+- Already-running streams don't fire on activation; only changes afterwards do.
+  The **Fetch Test Event** button shows what's playing right now.
 
-Events: **Playback Started / Paused / Resumed / Stopped** work in every mode.
-**Watched (Scrobble), Media Rated, New in Library** are only delivered in
-**Webhook** mode.
+Example: *Plex Trigger (Playback Started) -> Discord* -> "Someone started watching X".
 
-Example: *Plex Trigger (Auto, Playback Started) → Discord* to post
-"🎬 Someone started watching X".
+> **Want instant, richer events?** Plex also supports **webhooks** (Plex Pass):
+> media.play/pause/resume/stop/scrobble/rate and library.new, pushed instantly.
+> Use a native **Webhook** node in n8n and paste its URL into Plex ->
+> Settings -> Webhooks (app.plex.tv). Polling here is the zero-config,
+> no-Plex-Pass alternative.
 
 ## Compatibility
 
