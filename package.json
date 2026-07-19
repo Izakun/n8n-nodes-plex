@@ -1,0 +1,54 @@
+{
+  "name": "n8n-nodes-plex",
+  "version": "0.1.0",
+  "description": "n8n community node for Plex Media Server (libraries, sessions, search, metadata)",
+  "license": "MIT",
+  "homepage": "https://github.com/Izakun/n8n-nodes-plex",
+  "keywords": [
+    "homelab",
+    "media-server",
+    "n8n",
+    "n8n-community-node-package",
+    "plex"
+  ],
+  "author": {
+    "name": "Izakun",
+    "email": "30216483+Izakun@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Izakun/n8n-nodes-plex.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/PlexApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Plex/Plex.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "eslint": "9.32.0",
+    "prettier": "3.6.2",
+    "release-it": "^19.0.4",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
