@@ -133,20 +133,44 @@ export class PlexWebhookTrigger implements INodeType {
 		const events = this.getNodeParameter('events', []) as string[];
 		const body = this.getBodyData() as IDataObject;
 
-		// Plex posts multipart/form-data; n8n exposes the fields under `body.data`
-		// (JSON posts land directly on `body`). The `payload` field is a JSON string.
-		const data = ((body.data as IDataObject) ?? body) as IDataObject;
-		const raw = data.payload ?? body.payload;
+		// Plex posts multipart/form-data. The JSON lives in the `payload` field, which
+		// n8n exposes either as a text field (body.data.payload) or — when Plex also
+		// attaches a thumbnail — as an uploaded file (body.files.payload on disk).
+		const data = ((body.data as IDataObject) ?? {}) as IDataObject;
+		const files = ((body.files as IDataObject) ?? {}) as IDataObject;
+
+		let rawStr: string | undefined;
+		const payloadFile = files.payload as { filepath?: string } | undefined;
+		if (payloadFile?.filepath) {
+			// n8n reads the uploaded file for us (no fs import needed).
+			try {
+				const bin = await this.nodeHelpers.copyBinaryFile(
+					payloadFile.filepath,
+					'payload.json',
+					'application/json',
+				);
+				const buffer = bin.id
+					? await this.helpers.binaryToBuffer(await this.helpers.getBinaryStream(bin.id))
+					: Buffer.from(bin.data, 'base64');
+				rawStr = buffer.toString('utf8');
+			} catch {
+				rawStr = undefined;
+			}
+		} else if (typeof data.payload === 'string') {
+			rawStr = data.payload;
+		} else if (typeof body.payload === 'string') {
+			rawStr = body.payload as string;
+		}
 
 		let payload: IDataObject | undefined;
-		if (typeof raw === 'string') {
+		if (rawStr) {
 			try {
-				payload = JSON.parse(raw) as IDataObject;
+				payload = JSON.parse(rawStr) as IDataObject;
 			} catch {
 				payload = undefined;
 			}
-		} else if (raw && typeof raw === 'object') {
-			payload = raw as IDataObject;
+		} else if (data.payload && typeof data.payload === 'object') {
+			payload = data.payload as IDataObject;
 		} else if (typeof data.event === 'string') {
 			payload = data;
 		}
