@@ -26,19 +26,26 @@ The credential's *Test* button calls `/library/sections` to verify the token.
 
 ## Operations
 
-| Resource | Operation | Description |
-|----------|-----------|-------------|
-| Server   | Get Info | Server capabilities (`GET /`) |
-| Server   | Get Identity | Machine identifier & version (`GET /identity`) |
-| Library  | Get Libraries | List all library sections (`GET /library/sections`) |
-| Library  | Get Items | All items in a section (`GET /library/sections/{id}/all`) |
-| Session  | Get Active | Current playback sessions (`GET /status/sessions`) |
-| Session  | Get History | Playback history (`GET /status/sessions/history/all`) |
-| Search   | Search | Search across libraries (`GET /hubs/search`) |
-| Media    | Get Metadata | Item details by rating key (`GET /library/metadata/{ratingKey}`) |
+| Resource | Operations |
+|----------|------------|
+| **Server** | Get Info, Get Identity, Get Media Providers, Get Preferences, Set Preference, Optimize Database, Clean Bundles |
+| **Library** | Get Libraries, Get Library, Get Items, Get Recently Added, Get Collections, Scan, Empty Trash, Analyze |
+| **Media** | Get Metadata, Get Related, Get Similar, Refresh, Rate, Mark Played, Mark Unplayed, Delete |
+| **Session** | Get Active, Get History, Terminate |
+| **Search** | Search |
+| **Hub** | Get Global, Get Continue Watching, Get Promoted, Get Section Hubs |
+| **Playlist** | Get Many, Get, Get Items, Delete |
+| **Butler** | Get Tasks, Run All Tasks, Run Task, Stop All Tasks |
+| **Updater** | Get Status, Check For Updates, Apply Update |
 
-Responses are returned unwrapped: each element of the Plex `MediaContainer`
-(`Metadata`, `Directory`, or `Hub`) becomes a separate n8n item.
+Read operations return each element of the Plex `MediaContainer` (`Metadata`,
+`Directory`, `Hub`, `Setting`, …) as a separate n8n item. Write/action
+operations (Scan, Rate, Terminate, Set Preference, Apply Update, …) return
+`{ "success": true }`.
+
+> ⚠️ Some operations are **destructive or administrative** (Media → Delete,
+> Library → Empty Trash, Session → Terminate, Updater → Apply Update). Use them
+> deliberately.
 
 ## Usage example
 
