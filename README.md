@@ -60,8 +60,8 @@ operations (Scan, Rate, Terminate, Set Preference, Apply Update, …) return
   "title": "Interstellar",
   "type": "movie",
   "year": 2014,
-  "User": { "title": "alan", "id": "123456789" },
-  "Player": { "product": "Plex Web", "state": "playing", "address": "10.0.1.20" },
+  "User": { "title": "jdoe", "id": "123456789" },
+  "Player": { "product": "Plex Web", "state": "playing", "address": "192.0.2.50" },
   "Session": { "id": "abcdef", "bandwidth": 5212, "location": "lan" }
 }
 ```
