@@ -73,26 +73,6 @@ To list your libraries first, use **Library → Get Libraries**; take the `key`
 of a section and feed it into **Library → Get Items** (`Library Section ID`)
 to page through its content.
 
-## Triggers
-
-Two trigger nodes are included:
-
-### Plex Webhook Trigger (instant, Plex Pass)
-Fires **the moment** an event happens. When you activate the workflow, the node
-**auto-registers a webhook in your Plex account** (via plex.tv) using your
-credential's token, and removes it on deactivation — no manual copy/paste.
-Events: play / pause / resume / stop / **scrobble (watched)** / **rate** /
-**new in library**. Requires an active Plex Pass and that your n8n instance is
-reachable from the internet (a public Webhook URL).
-
-### Plex Trigger (polling, works everywhere)
-No Plex Pass needed. Polls `/status/sessions` on the schedule set on the node
-(down to every minute) and fires on playback started / paused / resumed /
-stopped. Use the **Fetch Test Event** button to see what's playing now.
-
-Example: *Plex Webhook Trigger (Playback Started) -> Discord* -> "Someone
-started watching X".
-
 ## Compatibility
 
 Tested against Plex Media Server API 1.x. Node.js 20+.
