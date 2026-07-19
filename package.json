@@ -38,7 +38,8 @@
       "dist/credentials/PlexApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Plex/Plex.node.js"
+      "dist/nodes/Plex/Plex.node.js",
+      "dist/nodes/PlexTrigger/PlexTrigger.node.js"
     ]
   },
   "devDependencies": {

@@ -73,6 +73,25 @@ To list your libraries first, use **Library → Get Libraries**; take the `key`
 of a section and feed it into **Library → Get Items** (`Library Section ID`)
 to page through its content.
 
+## Plex Trigger
+
+The **Plex Trigger** node starts a workflow on Plex events. It offers several
+mechanisms, best-first, and the default **Auto** mode degrades gracefully:
+
+| Mode | Real-time | Plex Pass | Setup | Notes |
+|------|-----------|-----------|-------|-------|
+| **Auto** (default) | ✅ | no | none | WebSocket, automatically falls back to Polling if the stream drops |
+| **Webhook** | ✅✅ | **required** | paste the node URL into Plex → Settings → Webhooks | Richest events (rate, new-in-library, watched) |
+| **WebSocket** | ✅ | no | none | Live notification stream from the server |
+| **Polling** | ~ | no | interval | Diffs `/status/sessions` every N seconds |
+
+Events: **Playback Started / Paused / Resumed / Stopped** work in every mode.
+**Watched (Scrobble), Media Rated, New in Library** are only delivered in
+**Webhook** mode.
+
+Example: *Plex Trigger (Auto, Playback Started) → Discord* to post
+"🎬 Someone started watching X".
+
 ## Compatibility
 
 Tested against Plex Media Server API 1.x. Node.js 20+.
