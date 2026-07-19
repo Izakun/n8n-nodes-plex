@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-plex",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "n8n community node for Plex Media Server (libraries, sessions, search, metadata)",
   "license": "MIT",
   "homepage": "https://github.com/Izakun/n8n-nodes-plex",
@@ -13,7 +13,7 @@
   ],
   "author": {
     "name": "Izakun",
-    "email": "30216483+Izakun@users.noreply.github.com"
+    "email": "carrer.a@outlook.fr"
   },
   "repository": {
     "type": "git",

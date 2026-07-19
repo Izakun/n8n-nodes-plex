@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.3
+- Set a reachable author email so n8n ownership-verification token is deliverable.
+
 ## 0.1.2
 - Fix publish workflow: pass NPM_TOKEN secret so CI publish (with provenance) authenticates.
 
