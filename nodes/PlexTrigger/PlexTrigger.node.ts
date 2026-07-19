@@ -81,12 +81,20 @@ export class PlexTrigger implements INodeType {
 			current[key] = state;
 			const prev = seen[key];
 			if (prev === undefined) {
-				// New session. Emit in manual (test) mode or once primed; stay silent on the
-				// very first production poll so we don't fire for already-running streams.
-				if ((isManual || primed) && wants('play')) push({ event: 'media.play', state, ...m });
+				// New session. Emit an event matching its ACTUAL state (a paused stream is
+				// not a "play"). In manual (test) mode we always report the current session;
+				// in production we stay silent on the very first poll so already-running
+				// streams don't fire on activation.
+				if (isManual || primed) {
+					if ((state === 'playing' || state === 'buffering') && wants('play'))
+						push({ event: 'media.play', state, ...m });
+					else if (state === 'paused' && wants('pause'))
+						push({ event: 'media.pause', state, ...m });
+				}
 			} else if (prev !== state) {
 				if (state === 'paused' && wants('pause')) push({ event: 'media.pause', state, ...m });
-				else if (state === 'playing' && wants('resume')) push({ event: 'media.resume', state, ...m });
+				else if ((state === 'playing' || state === 'buffering') && wants('resume'))
+					push({ event: 'media.resume', state, ...m });
 			}
 		}
 		if (primed && wants('stop')) {
