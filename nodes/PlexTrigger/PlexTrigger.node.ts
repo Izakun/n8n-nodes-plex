@@ -59,9 +59,12 @@ export class PlexTrigger implements INodeType {
 		const seen = staticData.seen ?? {};
 		const primed = staticData.primed === true;
 
+		const credentials = await this.getCredentials('plexApi');
+		const baseURL = (credentials.baseUrl as string).replace(/\/+$/, '');
+
 		const res = (await this.helpers.httpRequestWithAuthentication.call(this, 'plexApi', {
 			method: 'GET',
-			baseURL: '',
+			baseURL,
 			url: '/status/sessions',
 			json: true,
 		} as IHttpRequestOptions)) as IDataObject;
