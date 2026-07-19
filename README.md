@@ -73,25 +73,25 @@ To list your libraries first, use **Library → Get Libraries**; take the `key`
 of a section and feed it into **Library → Get Items** (`Library Section ID`)
 to page through its content.
 
-## Plex Trigger
+## Triggers
 
-The **Plex Trigger** node starts a workflow on playback changes. It polls the
-server's active sessions (`/status/sessions`) on the schedule you set on the
-node and fires on **Playback Started / Paused / Resumed / Stopped**. Works on
-any Plex server (no Plex Pass needed).
+Two trigger nodes are included:
 
-- Pick the events you care about (default: Started + Stopped).
-- Set the poll schedule on the node (down to every minute).
-- Already-running streams don't fire on activation; only changes afterwards do.
-  The **Fetch Test Event** button shows what's playing right now.
+### Plex Webhook Trigger (instant, Plex Pass)
+Fires **the moment** an event happens. When you activate the workflow, the node
+**auto-registers a webhook in your Plex account** (via plex.tv) using your
+credential's token, and removes it on deactivation — no manual copy/paste.
+Events: play / pause / resume / stop / **scrobble (watched)** / **rate** /
+**new in library**. Requires an active Plex Pass and that your n8n instance is
+reachable from the internet (a public Webhook URL).
 
-Example: *Plex Trigger (Playback Started) -> Discord* -> "Someone started watching X".
+### Plex Trigger (polling, works everywhere)
+No Plex Pass needed. Polls `/status/sessions` on the schedule set on the node
+(down to every minute) and fires on playback started / paused / resumed /
+stopped. Use the **Fetch Test Event** button to see what's playing now.
 
-> **Want instant, richer events?** Plex also supports **webhooks** (Plex Pass):
-> media.play/pause/resume/stop/scrobble/rate and library.new, pushed instantly.
-> Use a native **Webhook** node in n8n and paste its URL into Plex ->
-> Settings -> Webhooks (app.plex.tv). Polling here is the zero-config,
-> no-Plex-Pass alternative.
+Example: *Plex Webhook Trigger (Playback Started) -> Discord* -> "Someone
+started watching X".
 
 ## Compatibility
 

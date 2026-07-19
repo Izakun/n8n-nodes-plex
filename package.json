@@ -39,7 +39,8 @@
     ],
     "nodes": [
       "dist/nodes/Plex/Plex.node.js",
-      "dist/nodes/PlexTrigger/PlexTrigger.node.js"
+      "dist/nodes/PlexTrigger/PlexTrigger.node.js",
+      "dist/nodes/PlexWebhookTrigger/PlexWebhookTrigger.node.js"
     ]
   },
   "devDependencies": {
