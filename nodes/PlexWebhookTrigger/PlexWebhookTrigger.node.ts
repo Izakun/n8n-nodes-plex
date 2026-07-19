@@ -133,8 +133,12 @@ export class PlexWebhookTrigger implements INodeType {
 		const events = this.getNodeParameter('events', []) as string[];
 		const body = this.getBodyData() as IDataObject;
 
+		// Plex posts multipart/form-data; n8n exposes the fields under `body.data`
+		// (JSON posts land directly on `body`). The `payload` field is a JSON string.
+		const data = ((body.data as IDataObject) ?? body) as IDataObject;
+		const raw = data.payload ?? body.payload;
+
 		let payload: IDataObject | undefined;
-		const raw = body.payload;
 		if (typeof raw === 'string') {
 			try {
 				payload = JSON.parse(raw) as IDataObject;
@@ -143,19 +147,8 @@ export class PlexWebhookTrigger implements INodeType {
 			}
 		} else if (raw && typeof raw === 'object') {
 			payload = raw as IDataObject;
-		} else if (typeof body.event === 'string') {
-			payload = body;
-		} else {
-			const reqBody = (this.getRequestObject() as { body?: IDataObject }).body;
-			if (reqBody && typeof reqBody.payload === 'string') {
-				try {
-					payload = JSON.parse(reqBody.payload) as IDataObject;
-				} catch {
-					payload = undefined;
-				}
-			} else if (reqBody && typeof reqBody.event === 'string') {
-				payload = reqBody;
-			}
+		} else if (typeof data.event === 'string') {
+			payload = data;
 		}
 
 		if (!payload) return { webhookResponse: 'OK' };
