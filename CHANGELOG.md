@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4
+- Docs: replace personal placeholders (names/IPs) with neutral examples.
+
 ## 0.1.3
 - Set a reachable author email so n8n ownership-verification token is deliverable.
 
