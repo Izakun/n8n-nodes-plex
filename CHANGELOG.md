@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.5
+- docs: align README with standard template (badges, verified-node install).
+
 ## 0.1.4
 - Docs: replace personal placeholders (names/IPs) with neutral examples.
 
